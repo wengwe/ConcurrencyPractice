@@ -8,6 +8,14 @@ import java.util.concurrent.CyclicBarrier;
  * Time: 下午7:28
  */
 public class Main {
+    /*
+    In this recipe, you will learn how to use the CyclicBarrier class to synchronize a set of threads in a determined point. You will also use a Runnable object that will execute after all the threads have arrived to that point.
+     In the example, you will look for a number in a matrix of numbers.
+     The matrix will be divided in subsets (using the divide and conquer technique), so each thread will look for the number in one subset.
+     Once all the threads have finished their job, a final task will unify the results of them.
+
+      */
+
 
     public static void main(String[] args) {
         final int ROWS=10000;

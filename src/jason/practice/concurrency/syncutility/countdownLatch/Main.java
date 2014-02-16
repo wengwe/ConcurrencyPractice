@@ -8,7 +8,7 @@ package jason.practice.concurrency.syncutility.countdownLatch;
 public class Main {
 
     public static void main(String[] args) {
-
+         //waiting for multiple concurrent events
         Videoconference conference=new Videoconference(10);
 
         Thread threadConference=new Thread(conference);
