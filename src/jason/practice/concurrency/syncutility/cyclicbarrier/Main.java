@@ -1,6 +1,8 @@
 package jason.practice.concurrency.syncutility.cyclicbarrier;
 
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * User: Jason Weng
@@ -22,7 +24,7 @@ public class Main {
         final int NUMBERS=1000;
         final int SEARCH=5;
         final int PARTICIPANTS=5;
-        final int LINES_PARTICIPANT=2000;
+        final int LINES_PARTICIPANT=  NUMBERS / PARTICIPANTS;
 
         MatrixMock mock=new MatrixMock(ROWS, NUMBERS,SEARCH);
 
@@ -33,12 +35,18 @@ public class Main {
         CyclicBarrier barrier=new CyclicBarrier(PARTICIPANTS,grouper);
 
         Searcher searchers[]=new Searcher[PARTICIPANTS];
+
+        ThreadPoolExecutor executor=(ThreadPoolExecutor) Executors.newFixedThreadPool( PARTICIPANTS );
+
         for (int i=0; i<PARTICIPANTS; i++){
-            searchers[i]=new Searcher(i*LINES_PARTICIPANT, (i*LINES_PARTICIPANT)+LINES_PARTICIPANT, mock, results, 5,barrier);
+            searchers[i]=new Searcher(i*LINES_PARTICIPANT, (i*LINES_PARTICIPANT)+LINES_PARTICIPANT, mock, results, SEARCH,barrier);
             Thread thread=new Thread(searchers[i]);
-            thread.start();
+            //thread.start();
+            executor.execute(thread);  //submit will return a Future object.
         }
         System.out.printf("Main: The main thread has finished.\n");
+
+       executor.shutdown();
 
     }
 }
